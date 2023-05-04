@@ -9,6 +9,10 @@
   "author": "Mario Guggenberger <mg@protyposis.net>",
   "version": "1.0.0",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/protyposis/node-red-contrib-wled-notification.git"
+  },
   "main": "dist/wled-notification.js",
   "files": [
     "README.md",
