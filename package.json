@@ -53,6 +53,7 @@
     "node": ">=12"
   },
   "node-red": {
+    "version": ">=2.0.0",
     "nodes": {
       "wled-notification": "dist/wled-notification.js"
     }
