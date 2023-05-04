@@ -12,9 +12,7 @@ To install this node, follow the instructions in the [Node-RED documentation](ht
 
 ## Getting Started
 
-Add the `WLED Notification` node from the network category to your flow and configure the WLED host. All other settings have reasonable defaults.
-
-- [Example flow](docs/ha-example.md) from the [demo video](https://youtu.be/AdlwtjTB3xg)
+Add the `WLED Notification` node from the network category to your flow and configure the WLED host. All other settings have reasonable defaults. See [examples](examples/examples.md) for inspiration.
 
 ## Effects
 
