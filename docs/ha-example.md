@@ -1,0 +1,107 @@
+# Home Assistant Notification example
+
+This is an example flow which triggers the WLED notification time every time a notification is sent by Home Assistant, as seen in the [demo video](https://youtu.be/AdlwtjTB3xg).
+
+## Flow
+
+![ha-example-flow.png](ha-example-flow.png)
+
+```
+[
+    {
+        "id": "4484f9dfc74ccb7a",
+        "type": "tab",
+        "label": "HA WLED Notification",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c0bf74309fe790ad",
+        "type": "server-events",
+        "z": "4484f9dfc74ccb7a",
+        "name": "",
+        "server": "c7e102a0.4d836",
+        "version": 2,
+        "eventType": "call_service",
+        "exposeToHomeAssistant": false,
+        "eventData": "{\"domain\":\"notify\"}",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "waitForRunning": true,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "eventData"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "$outputData(\"eventData\").event_type",
+                "valueType": "jsonata"
+            }
+        ],
+        "event_type": "",
+        "x": 110,
+        "y": 40,
+        "wires": [
+            [
+                "3f86fd58d29c7747"
+            ]
+        ]
+    },
+    {
+        "id": "3f86fd58d29c7747",
+        "type": "wled-notification",
+        "z": "4484f9dfc74ccb7a",
+        "name": "",
+        "host": "wled-light",
+        "port": "21324",
+        "fps": "30",
+        "ledStart": "0",
+        "ledCount": "100",
+        "effect": "blink",
+        "effectFrequency": "2",
+        "effectCycles": "3",
+        "effectColor": "#ff0000",
+        "x": 330,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c7e102a0.4d836",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 5,
+        "addon": true,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "30",
+        "areaSelector": "friendlyName",
+        "deviceSelector": "friendlyName",
+        "entitySelector": "friendlyName",
+        "statusSeparator": "at: ",
+        "statusYear": "hidden",
+        "statusMonth": "short",
+        "statusDay": "numeric",
+        "statusHourCycle": "h23",
+        "statusTimeFormat": "h:m",
+        "enableGlobalContextStore": true
+    }
+]
+```

@@ -1,0 +1,239 @@
+<!--
+  ~ Copyright (c) 2023 Mario Guggenberger <mg@protyposis.net>
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<script type="text/javascript">
+  RED.nodes.registerType("wled-notification", {
+    category: "network",
+    color: "#ecb68c",
+    defaults: {
+      name: { value: "" },
+      host: { value: "", required: true },
+      port: {
+        value: "21324",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      fps: {
+        value: "30",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      ledStart: {
+        value: "0",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      ledCount: {
+        value: "100",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      effect: { value: "blink", required: true },
+      effectFrequency: {
+        value: "2",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      effectCycles: {
+        value: "3",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      effectColor: {
+        value: "#ff0000",
+        required: true,
+        validate: RED.validators.regex(/^#[0-9a-fA-F]{6}$/),
+      },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "light.svg",
+    paletteLabel: "WLED Notification",
+    label: function () {
+      return this.name || "WLED Notification";
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="wled-notification">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-host">Host</label>
+    <input
+      type="text"
+      id="node-input-host"
+      placeholder="WLED Device Hostname or IP address"
+    />
+  </div>
+  <div class="form-row">
+    <label for="node-input-port">Port</label>
+    <input
+      type="text"
+      id="node-input-port"
+      placeholder="WLED UDP Realtime Control Protocol port"
+    />
+  </div>
+  <div class="form-row">
+    <label for="node-input-fps">FPS</label>
+    <input type="text" id="node-input-fps" placeholder="FPS" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-ledStart">LED Start Index</label>
+    <input type="text" id="node-input-ledStart" placeholder="LED Start Index" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-ledCount">LED Count</label>
+    <input type="text" id="node-input-ledCount" placeholder="LED Count" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-effect">Effect</label>
+    <select id="node-input-effect">
+      <option value="blink">Blink</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-effectFrequency">Effect Frequency</label>
+    <input type="text" id="node-input-effectFrequency" placeholder="Hz" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-effectCycles">Effect Cycles</label>
+    <input type="text" id="node-input-effectCycles" placeholder="Cycles" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-effectColor">Effect Color</label>
+    <input type="text" id="node-input-effectColor" placeholder="Color" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="wled-notification">
+  <p>Displays a visual notification effect on a WLED device.</p>
+
+  <h3>Details</h3>
+  <p>
+    Uses WLED's UDP Realtime Control protocol to temporarily override whatever
+    the WLED device displays without interfering its configuration. For example,
+    if the device renders a WLED effect, this effect is temporarily replaced by
+    the notification effect. This does not change any WLED settings and
+    therefore does not introduce any edge cases in state handling.
+  </p>
+
+  <p>
+    All messages received during an active notification effect are discarded.
+  </p>
+
+  <p>
+    The protocol turns the WLED device temporarily on if it happens to be off
+    when the notification effect is triggered. Its brightness is limited by the
+    brightness setting on the device, i.e., when brightness is set to zero, the
+    notification effect will not be visible.
+  </p>
+
+  <p>
+    While this overrides normal WLED mode, it does not override other realtime
+    effects that use the same protocol (e.g., Hyperion, Prismatik ambilight).
+    Multiple active realtime effects interfere with each other.
+  </p>
+
+  <h3>Inputs</h3>
+  <p>
+    All configuration options can be overwritten by the input message, e.g.,
+    <code>msg.host</code> overwrites the <code>host</code> configuration.
+  </p>
+  <dl class="message-properties">
+    <dt>
+      host
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The hostname or IP address of the WLED device.</dd>
+
+    <dt>
+      port
+      <span class="property-type">number</span>
+    </dt>
+    <dd>
+      The number of the UDP Realtime Control protocol port of the WLED device.
+      The default is <code>21324</code>.
+    </dd>
+
+    <dt>
+      fps
+      <span class="property-type">number</span>
+    </dt>
+    <dd>The frame rate of the notification effect.</dd>
+
+    <dt>
+      ledStart
+      <span class="property-type">number</span>
+    </dt>
+    <dd>
+      The index of the first LED. Can be used to adjust the start position of
+      the effects on an LED strip.
+    </dd>
+
+    <dt>
+      ledCount
+      <span class="property-type">number</span>
+    </dt>
+    <dd>
+      The length of the LED strip (number of addressable LEDs). Can be used to
+      display the effects only on a subsection of an LED strip.
+    </dd>
+
+    <dt>
+      effect
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The name of the effect.</dd>
+
+    <dt>
+      effectFrequency
+      <span class="property-type">number</span>
+    </dt>
+    <dd>
+      The frequency of the effect. Can also be regarded as effect speed. For
+      example, a frequency of <code>1</code> Hz means that one cycle of the
+      effect takes 1 second.
+    </dd>
+
+    <dt>
+      effectCycles
+      <span class="property-type">number</span>
+    </dt>
+    <dd>
+      The number of cycles, i.e., how often the effect is repeated. For example,
+      <code>3</code> means that the effect repeats 3 times in total, meaning an
+      effect with 1 Hz will take 3 seconds.
+    </dd>
+
+    <dt>
+      effectColor
+      <span class="property-type">hex color string</span>
+    </dt>
+    <dd>
+      The color of the effect in hex code, e.g., <code>#ff0000</code> means
+      <em>red</em>.
+    </dd>
+  </dl>
+
+  <h3>Output</h3>
+  <p>
+    The node outputs the original input message after the notification effect
+    has finished.
+  </p>
+</script>
