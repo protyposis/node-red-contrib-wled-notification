@@ -1,6 +1,15 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  # CI workflow isn't triggered by release-please PRs: https://github.com/google-github-actions/release-please-action#github-credentials
+  # Instead of using a PAT, trigger CI workflows on the mandatory review of release PRs
+  pull_request_review:
+    types: [submitted]
+    branches:
+      - 'release-please*'
 
 jobs:
   validate:
