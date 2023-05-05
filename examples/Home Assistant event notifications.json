@@ -1,0 +1,91 @@
+[
+  {
+    "id": "4484f9dfc74ccb7a",
+    "type": "tab",
+    "label": "WLED Notification Test",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "f0ea860d48b51f80",
+    "type": "server-events",
+    "z": "4484f9dfc74ccb7a",
+    "name": "",
+    "server": "c7e102a0.4d836",
+    "version": 2,
+    "eventType": "notify-my-wled",
+    "exposeToHomeAssistant": false,
+    "eventData": "",
+    "haConfig": [
+      {
+        "property": "name",
+        "value": ""
+      },
+      {
+        "property": "icon",
+        "value": ""
+      }
+    ],
+    "waitForRunning": true,
+    "outputProperties": [
+      {
+        "property": "effectColor",
+        "propertyType": "msg",
+        "value": "$outputData(\"eventData\").event.effectColor",
+        "valueType": "jsonata"
+      }
+    ],
+    "event_type": "",
+    "x": 120,
+    "y": 40,
+    "wires": [
+      [
+        "d2e03ca65508e9e8"
+      ]
+    ]
+  },
+  {
+    "id": "d2e03ca65508e9e8",
+    "type": "wled-notification",
+    "z": "4484f9dfc74ccb7a",
+    "name": "",
+    "host": "10.12.84.123",
+    "port": "21324",
+    "fps": "30",
+    "ledStart": "0",
+    "ledCount": "100",
+    "effect": "blink",
+    "effectFrequency": "2",
+    "effectCycles": "3",
+    "effectColor": "#ff0000",
+    "x": 370,
+    "y": 40,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "c7e102a0.4d836",
+    "type": "server",
+    "name": "Home Assistant",
+    "version": 5,
+    "addon": true,
+    "rejectUnauthorizedCerts": true,
+    "ha_boolean": "y|yes|true|on|home|open",
+    "connectionDelay": true,
+    "cacheJson": true,
+    "heartbeat": false,
+    "heartbeatInterval": 30,
+    "areaSelector": "friendlyName",
+    "deviceSelector": "friendlyName",
+    "entitySelector": "friendlyName",
+    "statusSeparator": "at: ",
+    "statusYear": "hidden",
+    "statusMonth": "short",
+    "statusDay": "numeric",
+    "statusHourCycle": "h23",
+    "statusTimeFormat": "h:m",
+    "enableGlobalContextStore": true
+  }
+]
