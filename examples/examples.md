@@ -1,9 +1,13 @@
 # WLED Notification example flows
 
-## Home Assistant notifications
+## Home Assistant: Notify on service calls
 
-Triggers the WLED notification every time a notification is sent by Home Assistant, as seen in the [demo video](https://youtu.be/AdlwtjTB3xg).
+Triggers the WLED notification by a service call in Home Assistant.
 
-![ha-example-flow.png](ha-example-flow.png)
+<div align="center">
+	<img width="360" src="ha-example-flow.png">
+</div>
 
-- [Flow JSON](../examples/Home%20Assistant%20notifications.json)
+This example specifically listens to calls of HA's notification service (e.g., `notify.my_phone`) to trigger a WLED notification, but it can be easily customized to trigger on other service calls by adjusting the filter in the `events` node. Watch the [video demonstration](https://youtu.be/AdlwtjTB3xg) of WLED displaying a notification effect when Home Assistant sends a notification to a phone.
+
+- [Example flow (JSON)](../examples/Home%20Assistant%20service%20notifications.json)
